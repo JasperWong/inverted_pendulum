@@ -46,6 +46,20 @@
   * @param  None
   * @retval None
   */
+extern u32 delay_time; 
+
+
+void TIM2_IRQHandler(void)
+{
+	if ( TIM_GetITStatus(TIM2 , TIM_IT_Update) != RESET ) 
+	{
+		delay_time --;
+	    TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update); 
+	}
+     
+}
+
+
 void NMI_Handler(void)
 {
 }
