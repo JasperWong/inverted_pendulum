@@ -25,7 +25,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-
+#include "state.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -150,6 +150,60 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+}
+
+extern FUNCTION CurrentFunction;
+void EXTI1_IRQHandler (void)
+{
+	if(EXTI_GetITStatus(EXTI_Line1) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_1;
+		EXTI_ClearITPendingBit(EXTI_Line1);     //清除中断标志位
+	}  
+}
+void EXTI2_IRQHandler (void)
+{
+	if(EXTI_GetITStatus(EXTI_Line2) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_2;
+		EXTI_ClearITPendingBit(EXTI_Line2);     //清除中断标志位
+	}  
+}
+void EXTI3_IRQHandler (void)
+{
+	if(EXTI_GetITStatus(EXTI_Line3) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_3;
+		EXTI_ClearITPendingBit(EXTI_Line3);     //清除中断标志位
+	}  
+}
+void EXTI4_IRQHandler (void)
+{
+	if(EXTI_GetITStatus(EXTI_Line4) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_4;
+		EXTI_ClearITPendingBit(EXTI_Line4);     //清除中断标志位
+	}  
+}
+void EXTI9_5_IRQHandler (void)
+{
+	if(EXTI_GetITStatus(EXTI_Line5) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_5;
+		EXTI_ClearITPendingBit(EXTI_Line5);     //清除中断标志位
+	}  
+	
+	if(EXTI_GetITStatus(EXTI_Line6) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_6;
+		EXTI_ClearITPendingBit(EXTI_Line6);     //清除中断标志位
+	}  
+	
+	if(EXTI_GetITStatus(EXTI_Line7) != RESET) //确保是否产生了EXTI Line中断
+	{	
+		CurrentFunction.fun_state = STATE_FUNCTION_0;
+		EXTI_ClearITPendingBit(EXTI_Line7);     //清除中断标志位
+	}  
 }
 
 /******************************************************************************/

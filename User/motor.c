@@ -76,20 +76,17 @@ void MOTOR_GPIO_Configuration(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(StepMotor0_GPIO_CLK,ENABLE);
 	GPIO_DeInit(StepMotor0_GPIO_PORT);
-  GPIO_InitStructure.GPIO_Pin = StepMotor0_STP_GPIO_PIN | StepMotor0_DIR_GPIO_PIN | StepMotor0_EN_GPIO_PIN \
-															| StepMotor1_STP_GPIO_PIN | StepMotor1_DIR_GPIO_PIN | StepMotor1_EN_GPIO_PIN \
-															| StepMotor2_STP_GPIO_PIN | StepMotor2_DIR_GPIO_PIN | StepMotor2_EN_GPIO_PIN \
-															| StepMotor3_STP_GPIO_PIN | StepMotor3_DIR_GPIO_PIN | StepMotor3_EN_GPIO_PIN \
-															| StepMotor4_STP_GPIO_PIN | StepMotor4_DIR_GPIO_PIN | StepMotor4_EN_GPIO_PIN ;
+    GPIO_InitStructure.GPIO_Pin = StepMotor2_STP_GPIO_PIN | StepMotor2_DIR_GPIO_PIN | StepMotor2_EN_GPIO_PIN;
 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
 	GPIO_Init(StepMotor0_GPIO_PORT , &GPIO_InitStructure);	
 	
-	RCC_APB2PeriphClockCmd(StepMotor6_GPIO_CLK,ENABLE);
-	GPIO_DeInit(StepMotor6_GPIO_PORT);
-  GPIO_InitStructure.GPIO_Pin = StepMotor5_STP_GPIO_PIN | StepMotor5_DIR_GPIO_PIN | StepMotor5_EN_GPIO_PIN \
-															| StepMotor6_STP_GPIO_PIN | StepMotor6_DIR_GPIO_PIN | StepMotor6_EN_GPIO_PIN ;
+//	RCC_APB2PeriphClockCmd(StepMotor6_GPIO_CLK,ENABLE);
+//	GPIO_DeInit(StepMotor6_GPIO_PORT);
+//    GPIO_InitStructure.GPIO_Pin = StepMotor5_STP_GPIO_PIN | StepMotor5_DIR_GPIO_PIN | StepMotor5_EN_GPIO_PIN \
+//															| StepMotor6_STP_GPIO_PIN | StepMotor6_DIR_GPIO_PIN | StepMotor6_EN_GPIO_PIN ;
 	GPIO_Init(StepMotor6_GPIO_PORT , &GPIO_InitStructure);
+    StepMotor2_EN(OFF);
 }
 
 void StepMotor(char motor_num,char direction,u32 step)
