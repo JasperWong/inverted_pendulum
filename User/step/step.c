@@ -17,7 +17,13 @@ void StepByPwm(u8 direction,u32 step)
     StepMotor_DIR(direction);
 //    TIM_Cmd(TIM4, ENABLE); 
     TIM4_PWM_Init(1,1);
-    StepMotor_EN(OFF); 
+//    StepMotor_EN(OFF); 
+}
+
+void StepStop()
+{
+    TIM_Cmd(TIM4, DISABLE); 
+    StepMotor_EN(OFF);
 }
 static void TIM4_GPIO_Config(void) 
 {

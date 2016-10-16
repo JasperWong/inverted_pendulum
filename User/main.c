@@ -25,8 +25,8 @@ extern u16 speed_step;
 
 int main(void)
 {	
+    delay_init();
     USARTx_Config();
-    
     MOTOR_GPIO_Configuration();
 	EXTI_Pxy_Config();
 	TIM2_Configuration();
@@ -48,29 +48,25 @@ int main(void)
 //    speed=65535;
 //    StepMotor(2,FORE,1);
     Encoder_SetZero();
-    speed_step=50;
+    speed_step=10;
+    StepByPwm(BACK,12);
+    delay_ms(500);
+    StepStop();
 	while(1)  
 	{
         switch(CurrentFunction.fun_state)
-		{
-            case STATE_FUNCTION_0:
-            StepByPwm(BACK,12);
-            
-            
-            
-            
-
-            
-			break;
-            
+		{           
 			case STATE_FUNCTION_1:
-
+                
+            
+            
+            
                 printf("motor:%f",Encoder_GetAngle(1)); 
                 printf("\n");
                 printf("pole:%f",Encoder_GetAngle(0)); 
                 printf("\n");
                 printf("\n");
-                delay_ms(500);
+                delay_nms(500000);
               
 			break;
 			
@@ -94,8 +90,11 @@ int main(void)
 				printf("7");
 			break;
             
-
+            case STATE_FUNCTION_0:
             
+           
+			break;
+
 			default:
 				printf("else");
 			break;

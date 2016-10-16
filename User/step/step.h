@@ -2,6 +2,7 @@
 #define STEP_H
 
 #include "stm32f10x.h"
+#include "Encoder.h"
 
 #define FORE  0
 #define BACK  1
@@ -25,6 +26,7 @@ static void TIM4_GPIO_Config(void);
 void TIM4_PWM_Init(u16 arr,u16 psc);
 void Step_Init(u16 speed);
 void StepByPwm(u8 direction,u32 step);
+void StepStop();
 
 
 
