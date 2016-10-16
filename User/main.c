@@ -15,10 +15,13 @@
 #include "bsp_exti.h"
 #include "Encoder.h"
 #include "usart.h"
+#include "delay.h"
+#include "step.h"
 
 FUNCTION CurrentFunction;
 
 extern u16 speed;
+extern u16 speed_step;
 
 int main(void)
 {	
@@ -28,37 +31,47 @@ int main(void)
 	EXTI_Pxy_Config();
 	TIM2_Configuration();
     Encoder_Init();
+    Step_Init(1);
+    /*成功的第一二步*/
 //    speed=25;
-//    StepMotor(2,BACK,600);
+//    StepMotor(BACK,600);
 //    speed=15;
-//    StepMotor(2,BACK,600);
+//    StepMotor(BACK,600);
 //    speed=8;
-//    StepMotor(2,BACK,600);
+//    StepMotor(BACK,600);
 //    speed=100;
-//    StepMotor(2,FORE,800);  
+//    StepMotor(FORE,800);  
+    /*成功的第一二步*/
     
 //    speed=50;
 //    StepMotor(2,BACK,6400);
 //    speed=65535;
 //    StepMotor(2,FORE,1);
-//    Encoder_SetZero();
+    Encoder_SetZero();
+    speed_step=50;
 	while(1)  
 	{
-        
-//        printf("motor:%d",Encoder_Read(1)); 
-//        printf("\n");
-//        printf("pole:%d",Encoder_Read(0)); 
-//        printf("\n");
-//        printf("\n");
-//        delay_nms(500000);
         switch(CurrentFunction.fun_state)
 		{
-			case STATE_FUNCTION_0:
-				printf("7");
+            case STATE_FUNCTION_0:
+            StepByPwm(BACK,12);
+            
+            
+            
+            
+
+            
 			break;
-			
+            
 			case STATE_FUNCTION_1:
-				printf("1");
+
+                printf("motor:%f",Encoder_GetAngle(1)); 
+                printf("\n");
+                printf("pole:%f",Encoder_GetAngle(0)); 
+                printf("\n");
+                printf("\n");
+                delay_ms(500);
+              
 			break;
 			
 			case STATE_FUNCTION_2:
@@ -80,7 +93,9 @@ int main(void)
 			case STATE_FUNCTION_6:
 				printf("7");
 			break;
-			
+            
+
+            
 			default:
 				printf("else");
 			break;

@@ -129,7 +129,7 @@
 void TIM2_Configuration(void);
 void delay_nms(u32 n);
 void MOTOR_GPIO_Configuration(void);
-void StepMotor(char motor_num,char direction,u32 step);
+void StepMotor(char direction,u32 step);
 
 
 

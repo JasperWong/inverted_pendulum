@@ -89,100 +89,24 @@ void MOTOR_GPIO_Configuration(void)
     StepMotor2_EN(OFF);
 }
 
-void StepMotor(char motor_num,char direction,u32 step)
+void StepMotor(char direction,u32 step)
 {
-		switch(motor_num)
-		{
-			case 0 :StepMotor0_EN(ON);
-							StepMotor0_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor0_GPIO_PORT,StepMotor0_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor0_GPIO_PORT,StepMotor0_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-							StepMotor0_EN(OFF);
-							break;
-							
-			case 1 :StepMotor1_EN(ON);
-							StepMotor1_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor1_GPIO_PORT,StepMotor1_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor1_GPIO_PORT,StepMotor1_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-							StepMotor1_EN(OFF);
-							break;
-							
-			case 2 :StepMotor2_EN(ON);
-							StepMotor2_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor2_GPIO_PORT,StepMotor2_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor2_GPIO_PORT,StepMotor2_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-     						StepMotor2_EN(OFF);
-							break;
-							
-			case 3 :StepMotor3_EN(ON);
-							StepMotor3_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor3_GPIO_PORT,StepMotor3_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor3_GPIO_PORT,StepMotor3_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-							StepMotor3_EN(OFF);
-							break;
-							
-			case 4 :StepMotor4_EN(ON);
-							StepMotor4_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor4_GPIO_PORT,StepMotor4_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor4_GPIO_PORT,StepMotor4_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-							StepMotor4_EN(OFF);
-							break;
-							
-			case 5 :StepMotor5_EN(ON);
-							StepMotor5_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor5_GPIO_PORT,StepMotor5_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor5_GPIO_PORT,StepMotor5_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-							StepMotor5_EN(OFF);
-							break;
-							
-			case 6 :StepMotor6_EN(ON);
-							StepMotor6_DIR(direction);
-							for(;step;step--)
-							{
-									GPIO_SetBits(StepMotor6_GPIO_PORT,StepMotor6_STP_GPIO_PIN	);
-									delay_nms(speed);
-									GPIO_ResetBits(StepMotor6_GPIO_PORT,StepMotor6_STP_GPIO_PIN	);
-									delay_nms(speed);
-							}
-							StepMotor6_EN(OFF);
-							break;
-							
-			default : break;
-		}	
-		
+    StepMotor2_EN(ON);
+    StepMotor2_DIR(direction);
+    for(;step;step--)
+    {
+            GPIO_SetBits(StepMotor2_GPIO_PORT,StepMotor2_STP_GPIO_PIN	);
+            delay_nms(speed);
+            GPIO_ResetBits(StepMotor2_GPIO_PORT,StepMotor2_STP_GPIO_PIN	);
+            delay_nms(speed);
+    }
+    StepMotor2_EN(OFF);
+								
 }
 void StepMotor_Go(char motor_num,char direction)
 {
 		;
 }
+
+
 	
