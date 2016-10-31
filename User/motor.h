@@ -50,8 +50,8 @@
 #define StepMotor7_DIR_GPIO_PIN		  GPIO_Pin_7			        /* 连接到SCL时钟线的GPIO */
 #define StepMotor7_EN_GPIO_PIN		  GPIO_Pin_8			        /* 连接到SCL时钟线的GPIO */
 
-#define FORE  0
-#define BACK  1
+#define FORE  1
+#define BACK  0
 
 #define StepMotor0_DIR(a)	if (a)	\
 					GPIO_SetBits(StepMotor0_GPIO_PORT,StepMotor0_DIR_GPIO_PIN);\

@@ -173,10 +173,10 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4096</DriverSelection>
+            <DriverSelection>4103</DriverSelection>
           </Flash1>
-          <bUseTDR>1</bUseTDR>
-          <Flash2>BIN\UL2CM3.DLL</Flash2>
+          <bUseTDR>0</bUseTDR>
+          <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -369,7 +369,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\User;..\..\Libraries\CMSIS;..\..\Libraries\FWlib\inc;..\..\User\exit;..\..\User\encoder;..\..\User\usart;..\..\User\sys;..\..\User\delay;..\..\User\step</IncludePath>
+              <IncludePath>..\..\User;..\..\Libraries\CMSIS;..\..\Libraries\FWlib\inc;..\..\User\exit;..\..\User\encoder;..\..\User\usart;..\..\User\sys;..\..\User\delay;..\..\User\step;..\..\User\PID</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -596,6 +596,11 @@
               <FileName>step.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\step\step.c</FilePath>
+            </File>
+            <File>
+              <FileName>PID.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\PID\PID.c</FilePath>
             </File>
           </Files>
         </Group>

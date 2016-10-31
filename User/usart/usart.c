@@ -97,4 +97,34 @@ int fgetc(FILE *f)
 
 		return (int)USART_ReceiveData(macUSARTx);
 }
+
+void Usart_SendByte( USART_TypeDef * pUSARTx, uint8_t ch)
+{
+	/* ?????????USART1 */
+	USART_SendData(pUSARTx,ch);
+		
+	/* ?????? */
+	while (USART_GetFlagStatus(pUSARTx, USART_FLAG_TXE) == RESET);	
+}
+
+void Usart_SendStr( USART_TypeDef * pUSARTx, uint8_t *str )
+{
+	unsigned int k=0;
+    do 
+    {
+        Usart_SendByte( pUSARTx, *(str + k) );
+        k++;
+    }while(*(str + k) != '\0');
+}
+
+/*****************  ?????????? **********************/
+void Usart_SendStr_length( USART_TypeDef * pUSARTx, uint8_t *str,uint32_t strlen )
+{
+	unsigned int k=0;
+    do 
+    {
+        Usart_SendByte( pUSARTx, *(str + k) );
+        k++;
+    } while(k < strlen);
+}
 /*********************************************END OF FILE**********************/

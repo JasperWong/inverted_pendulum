@@ -8,14 +8,14 @@ typedef struct
 {
 	enum state
 	{
-		STATE_FUNCTION_0,
+		STATE_NONE,
 		STATE_FUNCTION_1,
 		STATE_FUNCTION_2,
 		STATE_FUNCTION_3,
 		STATE_FUNCTION_4,
 		STATE_FUNCTION_5,
 		STATE_FUNCTION_6,
-		
+		STATE_FUNCTION_7,		
 	};
 	uint8_t fun_state;
 }FUNCTION;

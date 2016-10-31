@@ -25,7 +25,7 @@
 
 
 void                USARTx_Config                           ( void );
-
+void Usart_SendByte( USART_TypeDef * pUSARTx, uint8_t ch);
 
 
 #endif /* __USART1_H */

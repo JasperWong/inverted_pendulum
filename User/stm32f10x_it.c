@@ -26,6 +26,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 #include "state.h"
+#include "usart.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -55,10 +56,8 @@ void TIM2_IRQHandler(void)
 	{
 		delay_time --;
 	    TIM_ClearITPendingBit(TIM2 , TIM_FLAG_Update); 
-	}
-     
+	} 
 }
-
 
 void NMI_Handler(void)
 {
@@ -201,7 +200,7 @@ void EXTI9_5_IRQHandler (void)
 	
 	if(EXTI_GetITStatus(EXTI_Line7) != RESET) //确保是否产生了EXTI Line中断
 	{	
-		CurrentFunction.fun_state = STATE_FUNCTION_0;
+		CurrentFunction.fun_state = STATE_FUNCTION_7;
 		EXTI_ClearITPendingBit(EXTI_Line7);     //清除中断标志位
 	}  
 }
