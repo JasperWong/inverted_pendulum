@@ -5,7 +5,8 @@
 #include "stm32f10x.h"
 #include <stdio.h>
 
-
+#define USART1_DR_Base  0x40013804	
+#define SENDBUFF_SIZE   53
 
 /**************************USART参数定义********************************/
 #define             macUSART_BAUD_RATE                       115200
@@ -24,8 +25,10 @@
 
 
 
-void                USARTx_Config                           ( void );
+void USARTx_Config( void );
+void USART1_DMA_Config(void);
 void Usart_SendByte( USART_TypeDef * pUSARTx, uint8_t ch);
-
+void Usart_SendStr( USART_TypeDef * pUSARTx, uint8_t *str );
+void Usart_SendStr_length( USART_TypeDef * pUSARTx, uint8_t *str,uint32_t strlen );
 
 #endif /* __USART1_H */

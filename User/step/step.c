@@ -148,8 +148,8 @@ void MotorFrequecyOut( unsigned int freq ,u8 dir)
 	if( freq > PWM_MAX )
 	{
 		TIM_PrescalerConfig(TIM4, 71, TIM_PSCReloadMode_Immediate);
-		TIM_SetAutoreload(TIM4, 80);
-		TIM_SetCompare3(TIM4, 40);
+		TIM_SetAutoreload(TIM4, 126);
+		TIM_SetCompare3(TIM4, 63);
 		TIM_Cmd(TIM4, ENABLE);
 	}
 	else if( freq < PWM_MIN )

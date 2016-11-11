@@ -2,7 +2,7 @@
 #ifndef __PID_H
 #define __PID_H
 
-#define PWM_MAX 300
+#define PWM_MAX 500
 #define PWM_MIN 0
 
 #define MICROSTEP 		MicrostepMode_Sixteenth		

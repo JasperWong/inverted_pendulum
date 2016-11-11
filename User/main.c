@@ -30,12 +30,11 @@ extern u16 speed_step;
 void QuickAround_Function1_2();
 void EncoderMoitor();
 
-
-
 int main(void)
 {	
     delay_init();
     USARTx_Config();
+	USART1_DMA_Config();
 	TIM3_Configuration();
 	MOTOR_GPIO_Configuration();
     Step_Init();
@@ -67,56 +66,49 @@ int main(void)
 
 	StepMotor_EN(ON);
 	TIM_Cmd(TIM3, ENABLE);
+	
+	while(1)
+	{
+		switch(CurrentFunction.fun_state)
+	    {       
+			case STATE_NONE:
 
-//	while(1)
-//	{
-//		switch(CurrentFunction.fun_state)
-//	    {       
-//			case STATE_NONE:
-//				TIM_Cmd(TIM3, DISABLE);
-//				StepMotor_EN(OFF);
-//			break;
-//	      
-//            case STATE_FUNCTION_1:
-////				MOTOR_GPIO_Configuration();
-//				QuickAround_Function1_2();
-//				CurrentFunction.fun_state = STATE_NONE;
-//            break;
-//            
-//            case STATE_FUNCTION_2:
-////				MOTOR_GPIO_Configuration();
-//                QuickAround_Function1_2();
-//            	CurrentFunction.fun_state = STATE_NONE;
-//            break;
-//            
-//            case STATE_FUNCTION_3:
-//				StepMotor_EN(ON);
-//				TIM_Cmd(TIM3, ENABLE);
-////                PID_Cal();  
-//            break;
-//            
-//            case STATE_FUNCTION_4:
-//                
-//            break;
-//            
-//            case STATE_FUNCTION_5:
-//                printf("5");
-//            break;
-//            
-//            case STATE_FUNCTION_6:
-//                printf("6");
-//            break;
-//            
-//            case STATE_FUNCTION_7:
-//            
-//           
-//            break;
-//        
-//            default:
-//                printf("else");
-//            break;
-//        }
-//    }
+			break;
+	      
+            case STATE_FUNCTION_1:
+
+            break;
+            
+            case STATE_FUNCTION_2:
+
+            break;
+            
+            case STATE_FUNCTION_3:
+
+            break;
+            
+            case STATE_FUNCTION_4:
+
+            break;
+            
+            case STATE_FUNCTION_5:
+
+            break;
+            
+            case STATE_FUNCTION_6:
+
+            break;
+            
+            case STATE_FUNCTION_7:
+            
+           
+            break;
+        
+            default:
+                printf("else");
+            break;
+        }
+    }
 }
 
 	

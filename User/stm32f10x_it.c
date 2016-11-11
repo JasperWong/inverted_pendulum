@@ -49,6 +49,9 @@
   */
 extern u32 delay_time; 
 
+extern float Kp;
+extern float Ki;
+extern float Kd;
 
 void TIM2_IRQHandler(void)
 {
@@ -156,6 +159,7 @@ void EXTI1_IRQHandler (void)
 {
 	if(EXTI_GetITStatus(EXTI_Line1) != RESET) //确保是否产生了EXTI Line中断
 	{	
+		Kp += 0.01;
 		CurrentFunction.fun_state = STATE_FUNCTION_1;
 		EXTI_ClearITPendingBit(EXTI_Line1);     //清除中断标志位
 	}  
@@ -164,6 +168,7 @@ void EXTI2_IRQHandler (void)
 {
 	if(EXTI_GetITStatus(EXTI_Line2) != RESET) //确保是否产生了EXTI Line中断
 	{	
+		Kp -= 0.01;
 		CurrentFunction.fun_state = STATE_FUNCTION_2;
 		EXTI_ClearITPendingBit(EXTI_Line2);     //清除中断标志位
 	}  
@@ -172,6 +177,7 @@ void EXTI3_IRQHandler (void)
 {
 	if(EXTI_GetITStatus(EXTI_Line3) != RESET) //确保是否产生了EXTI Line中断
 	{	
+		Ki += 0.001;
 		CurrentFunction.fun_state = STATE_FUNCTION_3;
 		EXTI_ClearITPendingBit(EXTI_Line3);     //清除中断标志位
 	}  
@@ -180,6 +186,7 @@ void EXTI4_IRQHandler (void)
 {
 	if(EXTI_GetITStatus(EXTI_Line4) != RESET) //确保是否产生了EXTI Line中断
 	{	
+		Ki -= 0.001;
 		CurrentFunction.fun_state = STATE_FUNCTION_4;
 		EXTI_ClearITPendingBit(EXTI_Line4);     //清除中断标志位
 	}  
@@ -188,12 +195,14 @@ void EXTI9_5_IRQHandler (void)
 {
 	if(EXTI_GetITStatus(EXTI_Line5) != RESET) //确保是否产生了EXTI Line中断
 	{	
+		Kd += 0.01;
 		CurrentFunction.fun_state = STATE_FUNCTION_5;
 		EXTI_ClearITPendingBit(EXTI_Line5);     //清除中断标志位
 	}  
 	
 	if(EXTI_GetITStatus(EXTI_Line6) != RESET) //确保是否产生了EXTI Line中断
 	{	
+		Kd -= 0.01;
 		CurrentFunction.fun_state = STATE_FUNCTION_6;
 		EXTI_ClearITPendingBit(EXTI_Line6);     //清除中断标志位
 	}  

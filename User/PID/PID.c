@@ -4,11 +4,17 @@
 #include "step.h"
 #include "usart.h"
 
+extern uint8_t SendBuff[SENDBUFF_SIZE];
+
 PID PID_Controller_angle;
 PID PID_Controller_velocity;
 
 PID *APID = &PID_Controller_angle;				// 倒立环 PID
 PID *VPID = &PID_Controller_velocity;				// 速度环 PID
+
+float Kp = 2.1;   
+float Ki = 0.534;
+float Kd = 0;
 
 /*
  * TIM_Period / Auto Reload Register(ARR) = 1000   TIM_Prescaler--71 
@@ -42,12 +48,20 @@ void TIM3_Configuration(void)
 	TIM_Cmd(TIM3, DISABLE);  //使能TIMx																		
 }
 
+//void PID_Init(void)
+//{
+//	APID->Kp = 9.6;
+//	APID->Ki = 0.04;
+//	APID->Kd = 0;
+//	APID->Expect = 512;
+//} 
+
 void PID_Init(void)
 {
-	APID->Kp = 4.7;
-	APID->Ki = 0.0850;
-	APID->Kd = 19.9;
-	APID->Expect = 512;
+	APID->Kp = Kp;
+	APID->Ki = Ki;
+	APID->Kd = Kd;
+	APID->Expect = 510;
 } 
 
 float Abs( float value )
@@ -59,102 +73,63 @@ float Abs( float value )
 	return value;
 }
 
-//void TIM3_IRQHandler(void)
-//{
-//	u8 dir;
-//	static u8 i;
-//	static int arr;
-//	static float pSpeed;
-//	if ( TIM_GetITStatus(TIM3 , TIM_IT_Update) != RESET ) 
-//	{
-//		
-//		APID->Current = Encoder_GetData(0);					    						//获取摆杆数据  经处理
-//		
-//		APID->Error = APID->Expect - APID->Current;			    						//偏差
-//		if(APID->Error > 0) dir = FORE;
-//			else dir = BACK;
-////		if(APID->Error >= -1.0 && APID->Error <= 1.0) APID->Error = 0;
-//		APID->sError += APID->Error;													//积分
-//		if(APID->Error > 170 || APID->Error < -170)										//不在倒立±120内重置PID
-//		{
-//			APID->Error = 0;
-//			APID->sError = 0;
-//			APID->dError = 0;
-//		}
-//		APID->dError = APID->Error - APID->lError;										//微分
-//		APID->lError = APID->Error;																			
-//		
-//		APID->Pwm += APID->Kp * APID->Error + APID->Ki * APID->sError + APID->Kd * APID->dError;
-//		if(i++ >= 5)																						
-//		{
-//			APID->Pwm /= 6;
-//			arr = (int)APID->Pwm;
-//			APID->Pwm = 0;
-//			i = 0;
-//			
-//			if(arr < 0) arr *= -1;
-//			
-////			if(arr > 0)																	//确定电机方向
-////			{
-////				dir = FORE;
-////			}
-////			else
-////			{
-////				dir = BACK;
-////				arr *= -1;
-////			}
-//			
-//			MotorFrequecyOut(arr,dir);  												//位置式PID输出
-
-//		}
-//				
-//		printf("%d  %f  %f  %f  %f\r\n",arr,APID->Error,APID->sError,APID->dError,APID->Pwm);
-//	    TIM_ClearITPendingBit(TIM3 , TIM_FLAG_Update); //TIM_FLAG_Update
-//	} 
-//}
-
 void TIM3_IRQHandler(void)
 {
 	u8 dir;
 	static u8 dead_flag;
 	static int arr;
+	u16 angle;
 
 	if ( TIM_GetITStatus(TIM3 , TIM_IT_Update) != RESET ) 
 	{
+		PID_Init();
 		APID->Current = Encoder_GetData(0);					    						//获取摆杆数据  经处理
-		
-		if(APID->Current > 390 && APID->Current < 634)
+		angle = (int)APID->Current / 5;
+		if(APID->Current > 410 && APID->Current < 614)
 		{
-//			printf("sumError %f",APID->sError);
-//			printf("add 1,0,%d",(int)(APID->Current*255/1024));
-//			Usart_SendByte(USART1, 0xFF);
-//			Usart_SendByte(USART1, 0xFF);
-//			Usart_SendByte(USART1, 0xFF);
+			
+			SendBuff[8] = (angle / 100) + '0';
+			angle %= 100;
+			SendBuff[9] = (angle / 10) + '0';
+			SendBuff[10] = (angle % 10) +'0';
+			
+			SendBuff[21] = (uint8_t)Kp + '0';
+			SendBuff[22] = ((uint8_t)((Kp*10)) % 10) + '0';
+			SendBuff[23] = ((uint8_t)((Kp*100)) % 10) + '0';
+			
+			SendBuff[34] = (uint8_t)Ki + '0';
+			SendBuff[35] = ((uint8_t)(Ki*10)) % 10 + '0';
+			SendBuff[36] = ((uint8_t)(Ki*100)) % 10 + '0';
+			
+			SendBuff[47] = (uint8_t)Kd + '0';
+			SendBuff[48] = ((uint8_t)(Kd*10)) % 10 + '0';
+			SendBuff[49] = ((uint8_t)(Kd*100)) % 10 + '0';
+			
+			USART_DMACmd(USART1, USART_DMAReq_Tx, ENABLE);
 			
 			APID->Error = APID->Expect - APID->Current;			    						//偏差
+			
 			if(APID->Error > 0) dir = FORE;
 				else dir = BACK;
 //			if(APID->Error >= -1.0 && APID->Error <= 1.0) APID->Error = 0;
 			APID->sError += APID->Error;													//积分
 			
-			if(APID->sError > 2050)  APID->sError = 2050;									//积分限幅
-			if(APID->sError < -2050) APID->sError = -2050;
+//			if(APID->sError > 512)  APID->sError = 512;									//积分限幅
+//			if(APID->sError < -512) APID->sError = -512;
 			
-			if(APID->Error > 0 && APID->sError < 0) APID->sError = 0;
-			if(APID->Error < 0 && APID->sError > 0) APID->sError = 0;
+//			if(APID->Error > 0 && APID->sError < 0) APID->sError = 0;
+//			if(APID->Error < 0 && APID->sError > 0) APID->sError = 0;
 			
 			APID->dError = APID->Error - APID->lError;										//微分
 			APID->lError = APID->Error;																			
 			
-			APID->Pwm = APID->Kp * APID->Error + APID->Ki * APID->sError + APID->Kd * APID->dError;
+			APID->Pwm = APID->Kp * APID->Error + APID->Ki * APID->sError + APID->Kd * APID->dError;				
 	
 			arr = (int)APID->Pwm;
-	
-//			if(arr > 0) dir = FORE;
-//			if(arr < 0) {arr *= -1; dir = BACK;}
+
 			if(arr < 0) arr *= -1;
 			
-			if(APID->Current > (APID->Expect -1) && APID->Current < (APID->Expect +1)) 
+			if((APID->Current > (APID->Expect - 1)) && (APID->Current < (APID->Expect + 1))) 
 			{
 				arr=arr*3/5;
 				dead_flag = 1;
@@ -181,47 +156,9 @@ void TIM3_IRQHandler(void)
 			APID->dError = 0;
 			TIM_Cmd(TIM4, DISABLE);
 			StepMotor_EN(OFF);
-			
+			USART_DMACmd(USART1, USART_DMAReq_Tx, DISABLE);  
 		}
 	    TIM_ClearITPendingBit(TIM3 , TIM_FLAG_Update); //TIM_FLAG_Update
 	} 
 }
-
-//void PID_Cal(void)
-//{
-//	u8 dir;
-//	static int arr;
-//	static float pSpeed;
-//	
-//	APID->Current = Encoder_GetData(0);					    						//获取摆杆数据  经处理
-//	if(APID->Current > 341 && APID->Current < 682)
-//	{
-//		
-//		APID->Error = APID->Expect - APID->Current;			    						//偏差
-//		if(APID->Error > 0) dir = FORE;
-//			else dir = BACK;
-////		if(APID->Error >= -1.0 && APID->Error <= 1.0) APID->Error = 0;
-//		APID->sError += APID->Error;													//积分
-//		
-//		APID->dError = APID->Error - APID->lError;										//微分
-//		APID->lError = APID->Error;																			
-//		
-//		APID->Pwm  ced = APID->Kp * APID->Error + APID->Ki * APID->sError + APID->Kd * APID->dError;
-
-//		arr = (int)APID->Pwm;
-
-//		if(arr < 0) arr *= -1;
-//		
-//		MotorFrequecyOut(arr,dir);  												//位置式PID输出
-//	
-//		printf("%d  %f  %f  %f  %f\r\n",arr,APID->Error,APID->sError,APID->dError,APID->Pwm);
-//	}
-//	else																			//重置PID参数
-//	{									
-//		APID->Error = 0;
-//		APID->sError = 0;
-//		APID->dError = 0;
-//		StepMotor_EN(OFF);
-//	}
-//}
 	
